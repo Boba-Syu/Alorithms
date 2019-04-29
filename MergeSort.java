@@ -8,7 +8,8 @@ public class MergeSort {
         }
         System.out.println();
 
-        top_down_sort(a, 0, a.length-1);
+        //top_down_sort(a, 0, a.length-1);
+        down_top_sort(a);
         for(int i = 0; i < 10; i++) {
             System.out.print(a[i]+" ");
         }
@@ -33,7 +34,7 @@ public class MergeSort {
         }
     }
 
-    public static void top_down_sort(int[] a, int lo, int hi) {
+    public static void top_down_sort(int[] a, int lo, int hi) { //自顶向下的归并(递归)
         if(hi <= lo)
             return;
         int mid = lo + (hi-lo)/2;
@@ -42,7 +43,10 @@ public class MergeSort {
         merge(a, lo, mid, hi);
     } 
 
-    public static void down_top_sort() {
-
+    public static void down_top_sort(int[] a) { //自底向上的归并(递推)
+        int N = a.length;
+        for(int sz = 1; sz < N; sz++) //sz为子数组大小
+            for(int lo = 0; lo < N-sz; lo += sz*2) // lo为子数组索引
+                merge(a, lo, lo+sz-1, Math.min(lo+sz*2-1, N-1));
     }
 }
