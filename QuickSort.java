@@ -6,7 +6,8 @@ public class QuickSort {
         }
         System.out.println();
 
-        sort(a, 0, 9);
+        //sort(a, 0, 9);
+        quick3way(a, 0, 9);
         for(int i = 0; i < 10; i++) {
             System.out.print(a[i]+" ");
         }
@@ -19,7 +20,7 @@ public class QuickSort {
         sort(a, lo, j-1);
         sort(a, j+1, hi);
     }    
-    
+
     private static int partition(int[] a, int lo, int hi) {
         int i = lo, j = hi + 1;
         int v = a[lo];
@@ -37,5 +38,25 @@ public class QuickSort {
         a[lo] = a[j];
         a[j] = tmp;
         return j;
+    }
+
+    private static void quick3way(int[] a, int lo, int hi) {
+        if(hi <= lo)
+            return;
+        int lt = lo, i = lo+1, gt = hi;
+        int v = a[lo];
+        while(i <= gt) {
+            if(a[i] < v) {
+                int tmp = a[i];
+                a[i++] = a[lt];
+                a[lt++] = tmp;
+            } else if(a[i] > v) {
+                int tmp = a[i]; 
+                a[i] = a[gt];
+                a[gt--] = tmp;
+            } else i++;
+        }
+        quick3way(a, lo, lt-1);
+        quick3way(a, gt+1, hi);
     }
 }
