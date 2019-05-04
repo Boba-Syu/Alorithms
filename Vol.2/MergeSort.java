@@ -1,3 +1,6 @@
+/**
+ * 归并排序
+ */
 public class MergeSort {
     static int aux[]; 
     public static void main(String[] args) {
@@ -17,7 +20,7 @@ public class MergeSort {
 
     }
 
-    public static void merge(int[] a, int lo, int mid, int hi) {
+    public static void merge(int[] a, int lo, int mid, int hi) { //归并操作
         int i = lo, j = mid + 1;
         for(int k = lo; k <= hi; k++) {
             aux[k] = a[k];

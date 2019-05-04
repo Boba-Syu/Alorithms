@@ -1,3 +1,6 @@
+/**
+ * 快速排序
+ */
 public class QuickSort {
     public static void main(String[] args) {
         int a[] = new int[]{2,1,5,7,9,0,6,4,3,8};
@@ -21,7 +24,7 @@ public class QuickSort {
         sort(a, j+1, hi);
     }    
 
-    private static int partition(int[] a, int lo, int hi) {
+    private static int partition(int[] a, int lo, int hi) { //普通的快排
         int i = lo, j = hi + 1;
         int v = a[lo];
         while(true) {
@@ -40,7 +43,7 @@ public class QuickSort {
         return j;
     }
 
-    private static void quick3way(int[] a, int lo, int hi) {
+    private static void quick3way(int[] a, int lo, int hi) { //三项切分的快速排序
         if(hi <= lo)
             return;
         int lt = lo, i = lo+1, gt = hi;
