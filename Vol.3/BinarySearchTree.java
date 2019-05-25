@@ -1,3 +1,6 @@
+/**
+ * 二叉排序树
+ */
 public class BinarySearchTree {
     private Node root; //二叉树的根结点
 
