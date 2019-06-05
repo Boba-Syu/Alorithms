@@ -13,7 +13,7 @@ public class RedBlackBST {
         private Node left, right;
         private int N;
         private boolean color;
-        
+
         Node(int key, int val, int N, int color) {
             this.key = key;
             this.val = val;
@@ -21,7 +21,7 @@ public class RedBlackBST {
             this.color = color;
         }
     }
-    
+
     public int size() {
         return size(root);
     }
@@ -31,7 +31,7 @@ public class RedBlackBST {
     }
 
     private boolean isRed(Node x) {
-        if(x == null)
+        if (x == null)
             return BLACK;
         return x.color == RED;
     }
@@ -65,55 +65,69 @@ public class RedBlackBST {
         h.right.color = BLACK;
     }
 
+    public int get(int key) { // 查找键为key的结点的值
+        return get(root, key).val;
+    }
+
+    private Node get(Node h, int key) { // 查找指定树中键为key的结点的值
+        if (h == null)
+            return null;
+        if (key < h.key)
+            return get(h.left, key);
+        else if (key > h.key)
+            return get(h.right, key);
+        return h;
+    }
+
     public void put(int Key, int value) { // 修改键为key的结点的值
         root = put(root, key, value);
         root.color = BLACK;
     }
 
-    public Node put(Node h, int key, int value) { // 在指定树中修改键为key的结点的值
-        if(h == null) 
+    private Node put(Node h, int key, int value) { // 在指定树中修改键为key的结点的值
+        if (h == null)
             return new Node(key, val, 1, RED);
 
-        if(key < h.key)
+        if (key < h.key)
             h.left = put(h.left, key, value);
-        else if(key > h.key)
+        else if (key > h.key)
             h.right = put(h.right, key, value);
         else
             h.val = value;
-        
+
         h = balance(h); // 调整红黑树的结构
         return h;
     }
 
     private Node balance(Node h) { // 平衡红黑树
-        if(isRed(h.right) && isRed(h.left)) 
-            h = rotateLeft(h);  
-        if(isRed(h.left) && !isRed(h.left.left))
+        if (isRed(h.right) && isRed(h.left))
+            h = rotateLeft(h);
+        if (isRed(h.left) && !isRed(h.left.left))
             h = rotateRight(h);
-        if(isRed(h.left) && isRed(h.right))
+        if (isRed(h.left) && isRed(h.right))
             flipColors(h);
-            
+
         h.N = size(h.left) + size(h.right) + 1;
         return h;
     }
 
     public void deleteMin() { // 删除最小的结点
-        if(!isRed(root.left) && !isRed(root.right))
+        if (!isRed(root.left) && !isRed(root.right))
             root.color = RED;
         root = deleteMin(root);
-        if(root != null)
+        if (root != null)
             root.color = BLACK;
     }
 
     /**
-     * 假设结点h为红色, h.left和h.left.left都为黑色
-     * 将h.left或者h.left.left的子结点之一变红
+     * 假设结点h为红色, h.left和h.left.left都为黑色 将h.left或者h.left.left的子结点之一变红
+     * 
      * @param h
      * @return
      */
-    private Node moveRedLeft(Node h) { 
+    private Node moveRedLeft(Node h) {
         flipColors(h);
-        if(isRed(h.right.left)) {
+        if (isRed(h.right.left)) {
             h.right = rotateRight(h.right);
             h = rotateLeft(h);
         }
@@ -121,9 +135,9 @@ public class RedBlackBST {
     }
 
     private Node deleteMin(Node h) { // 删除指定树中最小的结点
-        if(h.left == null) 
+        if (h.left == null)
             return null;
-        if(!isRed(h.left) && !isRed(h.left.left))
+        if (!isRed(h.left) && !isRed(h.left.left))
             h = moveRedLeft(h);
         h.left = deleteMin(h.left);
         return balance(h);
@@ -131,57 +145,57 @@ public class RedBlackBST {
 
     private Node moveRedRight(Node h) {
         flipColors(h);
-        if(!isRed(h.left.left))
+        if (!isRed(h.left.left))
             h = rotateRight(h);
         return h;
     }
 
     public void deleteMax() {
-        if(!isRed(root.left) && !isRed(root.right))
+        if (!isRed(root.left) && !isRed(root.right))
             root.color = RED;
         root = deleteMax(root);
-        if(root != null)
+        if (root != null)
             root.color = BLACK;
     }
 
     private Node deleteMax(Node h) {
-        if(isRed(h.left))
-        h = rotateRight(h);
-        if(h.right == null)
+        if (isRed(h.left))
+            h = rotateRight(h);
+        if (h.right == null)
             return null;
-        if(!isRed(h.right) && !isRed(h.right.left))
+        if (!isRed(h.right) && !isRed(h.right.left))
             h = moveRedRight(h);
         h.right = deleteMax(h.right);
         return balance(h);
     }
 
     public void delete(int key) {
-        if(!isRed(root.left) && !isRed(root.right))
+        if (!isRed(root.left) && !isRed(root.right))
             root.color = RED;
         root = delete(root, key);
-        if(root != null)
-            root.color = BLACK;        
+        if (root != null)
+            root.color = BLACK;
     }
 
     private Node delete(Node h, int key) {
-        if(key < h.key) {
-            if(!isRed(h.left) && !isRed(h.left.left))
+        if (key < h.key) {
+            if (!isRed(h.left) && !isRed(h.left.left))
                 h = moveRedLeft(h);
             h.left = delete(h.left, key);
         } else {
-            if(isRed(h.left))
+            if (isRed(h.left))
                 h = rotateRight(h);
-            if(key == h.key && h.right == null )
+            if (key == h.key && h.right == null)
                 return null;
-            if(!isRed(h.right) && !isRed(h.right.left))
+            if (!isRed(h.right) && !isRed(h.right.left))
                 h = moveRedRight(h);
-                if(key == h.key) {
-                    h.val = get(h.right, min(h.right).key);
-                    h.key = min(h.right).key;
-                    h.right = deleteMin(h);
-                } else 
-                    h.right = delete(h.right, key);
-        } 
+            if (key == h.key) {
+                h.val = get(h.right, min(h.right).key);
+                h.key = min(h.right).key;
+                h.right = deleteMin(h);
+            } else
+                h.right = delete(h.right, key);
+        }
         return balance(h);
     }
 
