@@ -30,6 +30,10 @@ public class SeparateChainingHash<Key, Value> {
         st[hash(key)].put(key, value);
     }
 
+    public void delete(Key key) {
+        st[hash(key)].delete(key, value);
+    }
+
     private class SequentialSearchST<Key, Value> {
         private Key key;
         private Value value;
@@ -62,6 +66,18 @@ public class SeparateChainingHash<Key, Value> {
                 else
                     return this.next.get(key);
             }
+        }
+
+        public void delete(Key key) {
+            if(this.next == null) 
+                return;
+            if(this.next.key.equals(key)) {
+                if(this.next.next != null) {
+                    this.next = this.next.next;
+                } else 
+                    this.next = null;
+            } else 
+                this.next.delete(key);
         }
     }
 }
