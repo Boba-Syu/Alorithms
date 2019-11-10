@@ -1,45 +1,68 @@
+package Vol_1;
+
 /*
-* 并查集实现程序
-* 使用路径压缩的加权quit-union算法
-*/
+ * 并查集实现程序
+ * 使用路径压缩的加权quit-union算法
+ */
 public class UF {
     private int[] id;
-    private int count; //连通图的个数
+    /**
+     * 连通图的个数
+     */
+    private int count;
     private int sz[];
 
-    public UF(int N) { // 构造方法
+    /**
+     * 构造方法
+     *
+     * @param N
+     */
+    public UF(int N) {
         id = new int[N];
         sz = new int[N];
-        for(int i = 0; i < N; i++) {
+        for (int i = 0; i < N; i++) {
             id[i] = i;
             sz[i] = 1;
         }
         count = N;
     }
 
-    public void union( int p, int q) { // 连接两个点
-            int rp = find(p);
-            int rq = find(q);
-            if(rq == rp)
-                return;
-            if(sz[rp] < sz[rq]) {
-                id[rp] = rq;
-                sz[rq] += sz[rp];
-            } else {
-                id[rq] = rp;
-                sz[rp] += sz[rq];
-            }
-            count--;
+    /**
+     * 连接两个点
+     *
+     * @param p
+     * @param q
+     */
+    public void union(int p, int q) {
+        int rp = find(p);
+        int rq = find(q);
+        if (rq == rp)
+            return;
+        if (sz[rp] < sz[rq]) {
+            id[rp] = rq;
+            sz[rq] += sz[rp];
+        } else {
+            id[rq] = rp;
+            sz[rp] += sz[rq];
+        }
+        count--;
     }
 
-    public  int find(int i) { // 查找根节点
-        while(id[i] != i)
+    /**
+     * 查找根节点
+     *
+     * @param i
+     * @return
+     */
+    public int find(int i) {
+        while (id[i] != i)
             i = id[i];
         int j = i;
-        while(id[j] != j) {
+        while (id[j] != j) {
             int tmp = j;
             j = id[j];
-            id[tmp] = i; // 将其直接与根节点相连
+            // 将其直接与根节点相连
+            id[tmp] = i;
         }
         return i;
     }
@@ -54,8 +77,8 @@ public class UF {
 
     public String toString() {
         String str = "";
-        for(int i : id) {
-            str += i+ " ";
+        for (int i : id) {
+            str += i + " ";
         }
         return str;
 
