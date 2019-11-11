@@ -1,5 +1,8 @@
 package Vol_3;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 二叉查找树
  *
@@ -39,6 +42,10 @@ public class BST<Key extends Comparable<Key>, Value> {
         return min(root).key;
     }
 
+    public Key max() {
+        return max(root).key;
+    }
+
     public Key floor(Key key) {
         Node x = floor(root, key);
         if (x == null) {
@@ -61,6 +68,16 @@ public class BST<Key extends Comparable<Key>, Value> {
 
     public void delete(Key key) {
         root = delete(root, key);
+    }
+
+    public Iterable<Key> keys() {
+        return keys(min(), max());
+    }
+
+    public Iterable<Key> keys(Key lo, Key hi) {
+        List<Key> list = new ArrayList<>();
+        keys(root, list, lo, hi);
+        return list;
     }
 
 
@@ -106,6 +123,13 @@ public class BST<Key extends Comparable<Key>, Value> {
             return null;
         }
         return min(x.left);
+    }
+
+    private Node max(Node x) {
+        if (x == null) {
+            return null;
+        }
+        return max(x.right);
     }
 
     /**
@@ -190,5 +214,22 @@ public class BST<Key extends Comparable<Key>, Value> {
         }
         x.N = size(x.left) + size(x.right) + 1;
         return x;
+    }
+
+    private void keys(Node x, List<Key> list, Key lo, Key hi) {
+        if (x == null) {
+            return;
+        }
+        int cmpLo = lo.compareTo(x.key);
+        int cmpHi = hi.compareTo(x.key);
+        if (cmpLo < 0) {
+            keys(x.left, list, lo, hi);
+        }
+        if (cmpLo <= 0 && cmpHi >= 0) {
+            list.add(x.key);
+        }
+        if (cmpHi > 0) {
+            keys(x.right, list, lo, hi);
+        }
     }
 }
