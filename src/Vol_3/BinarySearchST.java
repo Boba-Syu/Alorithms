@@ -1,8 +1,6 @@
 package Vol_3;
 
-import java.util.LinkedList;
-import java.util.Objects;
-import java.util.Queue;
+import java.util.*;
 
 /**
  * 基于二分查找的有序数组
@@ -33,6 +31,12 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
         }
     }
 
+    /**
+     * 查找键
+     *
+     * @param key
+     * @return
+     */
     private int rank(Key key) {
         int lo = 0, hi = N - 1;
         while (lo <= hi) {
@@ -49,8 +53,23 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
         return lo;
     }
 
+    public void put(Key key, Value value) {
+        int i = rank(key);
+        if (i < N && keys[i].compareTo(key) == 0) {
+            values[i] = value;
+            return;
+        }
+        for (int j = N; j > i; j--) {
+            keys[j] = keys[j - 1];
+            values[j] = values[j - 1];
+        }
+        keys[i] = key;
+        values[i] = value;
+        N++;
+    }
+
     private boolean isEmpty() {
-        return keys.length > 0;
+        return size() == 0;
     }
 
     public Key min() {
@@ -61,25 +80,80 @@ public class BinarySearchST<Key extends Comparable<Key>, Value> {
         return keys[N - 1];
     }
 
+    /**
+     * 排名为key的键
+     *
+     * @param k
+     * @return
+     */
     public Key select(int k) {
         return keys[k];
     }
 
+    /**
+     * 大于等于key的最小键
+     *
+     * @param key
+     * @return
+     */
     public Key ceiling(Key key) {
         int i = rank(key);
         return keys[i];
     }
 
+    /**
+     * 小于等于key的最大键
+     *
+     * @param key
+     * @return
+     */
     public Key floor(Key key) {
-        return null;
+        int i = rank(key);
+        if (i < N && keys[i].compareTo(key) == 0) {
+            return keys[i];
+        }
+        if (i == 0) {
+            return null;
+        }
+        return keys[i - 1];
     }
 
-    public Key delete(Key key) {
-        return null;
+    public void delete(Key key) {
+        if (isEmpty()) {
+            return;
+        }
+        int i = rank(key);
+        if (i == N || keys[i].compareTo(key) != 0) {
+            return;
+        }
+        for (int j = i; j < N; j++) {
+            keys[j] = keys[j + 1];
+            values[j] = values[j + 1];
+        }
+        N--;
+        keys[N - 1] = null;
+        values[N - 1] = null;
+    }
+
+    private boolean contains(Key key) {
+        return get(key) != null;
     }
 
     public Iterable<Key> keys(Key lo, Key hi) {
-        return null;
+        List<Key> list = new ArrayList<>();
+        if (lo.compareTo(hi) > 0) {
+            return list;
+        }
+        for (int i = rank(lo); i < rank(hi); i++) {
+            list.add(keys[i]);
+        }
+        if (contains(hi)) {
+            list.add(keys[rank(hi)]);
+        }
+        return list;
     }
 
+    public Iterable<Key> keys() {
+        return keys(min(), max());
+    }
 }
