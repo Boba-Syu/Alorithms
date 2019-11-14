@@ -8,8 +8,8 @@ import java.util.List;
  * <p>
  * 红链接将两个2-结点连接起来构成3-结点
  * 3-结点表示为一条左斜的红色链接, 红链接均为左连接
- * 没有任何一个结点同时和两条相连
- * 任意空连接带根结点路径上的黑链接数量都相等
+ * 没有任何一个结点同时和两条红链接相连
+ * 任意空结点到根结点路径上的黑链接数量都相等
  *
  * @param <Key>
  * @param <Value>
@@ -155,7 +155,7 @@ public class RedBlackBST<Key extends Comparable<Key>, Value> {
         return keys(min(), max());
     }
 
-    public Iterable<Key> keys(Key lo, Key hi) {
+    private Iterable<Key> keys(Key lo, Key hi) {
         List<Key> list = new ArrayList<>();
         keys(root, list, lo, hi);
         return list;
