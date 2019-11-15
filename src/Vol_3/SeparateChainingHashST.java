@@ -42,6 +42,7 @@ public class SeparateChainingHashST<Key, Value> {
 
     public void put(Key key, Value value) {
         st[hash(key)].put(key, value);
+        N++;
     }
 
     public Iterable<Key> keys() {
