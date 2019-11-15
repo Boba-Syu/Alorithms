@@ -45,6 +45,18 @@ public class SeparateChainingHashST<Key, Value> {
         N++;
     }
 
+    public void delete(Key key) {
+        int hs = hash(key);
+        if (st[hs].contains(key)) {
+            N--;
+        }
+        st[hs].delete(key);
+    }
+
+    private boolean contains(Key key) {
+        return get(key) != null;
+    }
+
     public Iterable<Key> keys() {
         List<Key> list = new ArrayList<>();
         for (int i = 0; i < M; i++) {
