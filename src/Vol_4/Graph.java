@@ -23,6 +23,7 @@ public class Graph {
 
     public Graph(int V) {
         this.V = V;
+        this.E = 0;
         for (int i = 0; i < V; i++) {
             adj.put(i, new HashSet<>());
         }
@@ -38,12 +39,14 @@ public class Graph {
 
     /**
      * 添加边
+     *
      * @param v
      * @param w
      */
     public void addEdge(int v, int w) {
         adj.get(v).add(w);
         adj.get(w).add(v);
+        this.E++;
     }
 
     public Iterable<Integer> adj() {
