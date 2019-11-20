@@ -49,7 +49,7 @@ public class Graph {
         this.E++;
     }
 
-    public Iterable<Integer> adj() {
-        return this.adj.keySet();
+    public Iterable<Integer> adj(int v) {
+        return this.adj.get(v);
     }
 }
