@@ -1,10 +1,27 @@
 package Vol_4;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * 深度优先遍历
  */
 public class DepthFirstSearch {
-    private boolean[] market;
+    /**
+     * 该顶点是否调用了dfs()
+     */
+    private boolean[] marked;
+    /**
+     * 从起点到一个顶点的已知路径上的最后一个顶点
+     */
+    private int[] edgeTo;
+    /**
+     * 起点
+     */
+    private int s;
+    /**
+     * 与起点相连接的顶点数
+     */
     private int count;
 
     /**
@@ -14,15 +31,18 @@ public class DepthFirstSearch {
      * @param s
      */
     public DepthFirstSearch(Graph g, int s) {
-        market = new boolean[g.getV()];
+        this.marked = new boolean[g.getV()];
+        this.edgeTo = new int[g.getV()];
+        this.s = s;
+        this.count = 0;
         dfs(g, s);
     }
 
     private void dfs(Graph g, int v) {
-        market[v] = true;
-        count++;
+        marked[v] = true;
         for (int w : g.adj()) {
-            if (!market[w]) {
+            if (!marked[w]) {
+                this.edgeTo[w] = v;
                 dfs(g, w);
             }
         }
@@ -34,8 +54,8 @@ public class DepthFirstSearch {
      * @param w
      * @return
      */
-    public boolean marked(int w) {
-        return market[w];
+    public boolean hasPathTo(int w) {
+        return marked[w];
     }
 
     /**
@@ -45,6 +65,24 @@ public class DepthFirstSearch {
      */
     public int getCount() {
         return count;
+    }
+
+    /**
+     * 获取起点s到顶点v的路径
+     *
+     * @param v
+     * @return
+     */
+    public Iterable<Integer> pathTo(int v) {
+        if (!hasPathTo(v)) {
+            return null;
+        }
+        List<Integer> path = new ArrayList<>();
+        for (int i = v; i != s; i = edgeTo[i]) {
+            path.add(i);
+        }
+        path.add(s);
+        return path;
     }
 
 }
