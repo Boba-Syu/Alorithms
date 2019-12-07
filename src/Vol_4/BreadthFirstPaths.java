@@ -36,7 +36,7 @@ public class BreadthFirstPaths {
             int v = list.get(last);
             list.remove(last);
             for (int w : g.adj(v)) {
-                if (marked[w]) {
+                if (!marked[w]) {
                     edgeTo[w] = v;
                     marked[w] = true;
                     list.add(w);
