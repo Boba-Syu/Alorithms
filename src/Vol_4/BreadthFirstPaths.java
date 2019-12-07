@@ -1,6 +1,7 @@
 package Vol_4;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -28,13 +29,12 @@ public class BreadthFirstPaths {
     }
 
     private void bfs(Graph g, int s) {
-        List<Integer> list = new ArrayList<>();
+        List<Integer> list = new LinkedList<>();
         marked[s] = true;
         list.add(s);
         while (!list.isEmpty()) {
-            int last = list.size() - 1;
-            int v = list.get(last);
-            list.remove(last);
+            int v = list.get(0);
+            list.remove(0);
             for (int w : g.adj(v)) {
                 if (!marked[w]) {
                     edgeTo[w] = v;
