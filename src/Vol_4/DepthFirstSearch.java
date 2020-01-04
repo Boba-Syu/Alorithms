@@ -2,6 +2,7 @@ package Vol_4;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * 深度优先遍历
@@ -44,6 +45,28 @@ public class DepthFirstSearch {
             if (!marked[w]) {
                 this.edgeTo[w] = v;
                 dfs(g, w);
+            }
+        }
+    }
+
+    private void dfsByStack(Graph g, int v) {
+        marked[v] = true;
+        Stack<Integer> stack = new Stack<>();
+        stack.push(v);
+        while (!stack.empty()) {
+            int u = stack.peek();
+            int w = u;
+            for (int i : g.adj(v)) {
+                if (!marked[i]) {
+                    w = i;
+                    break;
+                }
+            }
+            if (w != u) {
+                this.edgeTo[w] = v;
+                stack.push(w);
+            } else {
+                stack.pop();
             }
         }
     }
